@@ -48,6 +48,6 @@ def get_large_audio_transcription(path, lang):
             else:
                 text = f"{text.capitalize()}. "
                 print(chunk_filename, ":", text)
-                whole_text += text
+                whole_text += text.rstrip()
     # return the text for all chunks detected
     return whole_text
