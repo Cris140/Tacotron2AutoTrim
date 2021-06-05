@@ -12,6 +12,10 @@ import contextlib
 import transcribe
 
 if __name__ == '__main__':
+    
+    import imageio
+    imageio.plugins.ffmpeg.download()
+    
     file_number = 1
 
     input_file = input('Enter the name of the input file (include extension): ')
