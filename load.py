@@ -15,7 +15,7 @@ if __name__ == '__main__':
     
     import imageio
     imageio.plugins.ffmpeg.download()
-    
+
     file_number = 1
 
     input_file = input('Enter the name of the input file (include extension): ')
@@ -54,6 +54,11 @@ if __name__ == '__main__':
         skip_large_duration_files = False
     else:
         skip_large_duration_files = True
+    
+    if skip_large_duration_files:
+        max_dur_audio = int(input('[12] Enter max audio duration: ') or 12)
+    else:
+        max_dur_audio = 12
 
     # assign files
     input_file = 'input/' + input_file
@@ -94,7 +99,7 @@ if __name__ == '__main__':
             #print('Duration:', duration)
 
         if skip_large_duration_files:
-            if duration < 12:
+            if duration < max_dur_audio:
                 transcription = transcribe.get_large_audio_transcription(out_file, lang)
 
                 if transcription != '':
