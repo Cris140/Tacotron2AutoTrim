@@ -41,6 +41,7 @@ if __name__ == '__main__':
         lang = 'it-IT'
     elif lang_input.strip().lower() == 'japanese':
         lang = 'ja'
+        _encoding = 'utf-16'
     elif lang_input.strip().lower() == 'russian':
         lang = 'ru'
     elif lang_input.strip().lower() == 'arabic':
