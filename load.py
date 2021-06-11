@@ -27,6 +27,8 @@ if __name__ == '__main__':
     print('\nSUPPORTED LENGUAGES: English, Spanish, French, German, Italian, Japanese, Russian, Arabic')
     lang_input = input('[English] What lenguage is spoken in your input audio?: ') or 'English'
 
+    _encoding = 'utf-8'
+
     if lang_input.strip().lower() == 'english':
         lang = 'en-US'
     elif lang_input.strip().lower() == 'spanish':
@@ -43,6 +45,12 @@ if __name__ == '__main__':
         lang = 'ru'
     elif lang_input.strip().lower() == 'arabic':
         lang = 'ar-EG'
+    else:
+        print('Invalid language!')
+        import sys
+        import time
+        time.sleep(2)
+        sys.exit(0)
 
     min_silence_len_var = int(input('[750] Enter min silence len (1000 cuts at 1 second of silence, 500 is 0.5 sec): ') or 750)
     silence_thresh_var = int(input('[-40] Enter silence thresh: ') or -40)
@@ -105,15 +113,15 @@ if __name__ == '__main__':
                 if transcription != '':
                     if os.path.isfile('output/list.txt'):
                         if os.stat("output/list.txt").st_size != 0:
-                            with open('output/list.txt', 'a+') as f:
+                            with open('output/list.txt', 'a+', encoding=_encoding) as f:
                                 f.write(f'\nwavs/{file_number}.wav|' + transcription)
                                 f.flush()
                         else:
-                            with open('output/list.txt', 'a+') as f:
+                            with open('output/list.txt', 'a+', encoding=_encoding) as f:
                                 f.write(f'wavs/{file_number}.wav|' + transcription)
                                 f.flush()
                     else:
-                        with open('output/list.txt', 'x') as f:
+                        with open('output/list.txt', 'x', encoding=_encoding) as f:
                             f.write(f'wavs/{file_number}.wav|' + transcription)
 
                     file_number = file_number + 1
@@ -127,16 +135,16 @@ if __name__ == '__main__':
 
             if transcription != '':
                 if os.path.isfile('output/list.txt'):
-                    if os.stat("output/list.txt").st_size != 0:
+                    if os.stat("output/list.txt", encoding=_encoding).st_size != 0:
                         with open('output/list.txt', 'a+') as f:
                             f.write(f'\nwavs/{file_number}.wav|' + transcription)
                             f.flush()
                     else:
-                        with open('output/list.txt', 'a+') as f:
+                        with open('output/list.txt', 'a+', encoding=_encoding) as f:
                             f.write(f'wavs/{file_number}.wav|' + transcription)
                             f.flush()
                 else:
-                    with open('output/list.txt', 'x') as f:
+                    with open('output/list.txt', 'x', encoding=_encoding) as f:
                         f.write(f'wavs/{file_number}.wav|' + transcription)
 
                 file_number = file_number + 1
