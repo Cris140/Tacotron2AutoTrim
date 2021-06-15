@@ -28,12 +28,12 @@ def strip_accents(s):
    return ''.join(c for c in unicodedata.normalize('NFD', s)
                   if unicodedata.category(c) != 'Mn')
 
-file = open('list.txt')
+file = open('list.txt', encoding='utf-8')
 
 lineslist = []
 
 # create file object
-file1 = open('list_corrected.txt', "w+")
+file1 = open('list_corrected.txt', "w+", encoding='utf-8')
 
 # read all lines
 lines = file.readlines()
