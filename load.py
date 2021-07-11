@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     print('\n[INFO] If you leave the following fields blank it will use the default value, displayed at the left side.')
 
-    print('\nSUPPORTED LENGUAGES: English, Spanish, French, German, Italian, Japanese, Russian, Arabic')
+    print('\nSUPPORTED LENGUAGES: English, Spanish, French, German, Italian, Japanese, Russian, Polish, Arabic')
     lang_input = input('[English] What lenguage is spoken in your input audio?: ') or 'English'
 
     _encoding = 'utf-8'
@@ -46,6 +46,8 @@ if __name__ == '__main__':
         lang = 'ru'
     elif lang_input.strip().lower() == 'arabic':
         lang = 'ar-EG'
+    elif lang_input.strip().lower() == 'polish':
+        lang = 'pl'
     else:
         print('Invalid language!')
         import sys
