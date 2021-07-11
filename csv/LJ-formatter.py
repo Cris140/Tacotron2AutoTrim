@@ -4,7 +4,7 @@ import unicodedata
 
 lang = ''
 
-print('\nSUPPORTED LENGUAGES: English, Spanish, French, German, Italian, Japanese, Russian, Arabic')
+print('\nSUPPORTED LENGUAGES: English, Spanish, French, German, Italian, Japanese, Russian, Polish, Arabic')
 lang_input = input('What lenguage is spoken in your audios?: ')
 
 if lang_input.strip().lower() == 'english':
@@ -21,6 +21,8 @@ elif lang_input.strip().lower() == 'japanese':
     lang = 'ja'
 elif lang_input.strip().lower() == 'russian':
     lang = 'ru'
+elif lang_input.strip().lower() == 'polish':
+    lang = 'pl'
 elif lang_input.strip().lower() == 'arabic':
     lang = 'ar'
 
