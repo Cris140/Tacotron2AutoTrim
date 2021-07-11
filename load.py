@@ -47,7 +47,7 @@ if __name__ == '__main__':
     elif lang_input.strip().lower() == 'arabic':
         lang = 'ar-EG'
     elif lang_input.strip().lower() == 'polish':
-        lang = 'pl'
+        lang = 'pl-PL'
     else:
         print('Invalid language!')
         import sys
