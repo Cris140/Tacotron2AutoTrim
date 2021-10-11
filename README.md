@@ -2,6 +2,7 @@
 
 Auto trim and auto transcription of audio for using in Tacotron 2
 
+UPDATE: THIS PROJECT IS NO LONGER MANTAINED AND A NEW DATASET GENERATOR TOOL WITH 99% TRANSCRIPTION ACCURACY WILL BE RELEASED BY ME SOON
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 IMPORTANT: .exe releases are not been updated anymore, if you want to use the latest version of the program you will have to run it from source with python.
