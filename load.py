@@ -54,10 +54,10 @@ if __name__ == '__main__':
         time.sleep(2)
         sys.exit(0)
 
-    min_silence_len_var = Mínimo de tempo considerado como silêncio
-    silence_thresh_var = Volume considerado como silêncio em DB
+    min_silence_len_var = Mínimo_de_tempo_considerado_como_silêncio
+    silence_thresh_var = Volume_considerado_como_silêncio_em_DB
 
-    skip_large_duration_files_input = Pular áudios grandes
+    skip_large_duration_files_input = Pular_áudios_grandes
     if skip_large_duration_files_input.strip().lower() == 'yes':
         skip_large_duration_files = True
     elif skip_large_duration_files_input.strip().lower() == 'no':
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         skip_large_duration_files = True
     
     if skip_large_duration_files:
-        max_dur_audio = Duração máxima dos áudios em segundos
+        max_dur_audio = Duração_máxima_dos_áudios_em_segundos
     else:
         max_dur_audio = 12
 
