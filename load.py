@@ -18,14 +18,11 @@ if __name__ == '__main__':
 
     file_number = 1
 
-    input_file = input('Enter the name of the input file (include extension): ')
+    input_file = "audio.mp3"
 
     lang = ''
-
-    print('\n[INFO] If you leave the following fields blank it will use the default value, displayed at the left side.')
-
-    print('\nSUPPORTED LENGUAGES: English, Spanish, French, German, Italian, Japanese, Russian, Brazilian Portuguese, Polish, Arabic')
-    lang_input = input('[English] What lenguage is spoken in your input audio?: ') or 'English'
+    
+    lang_input = "Brazilian Portuguese"
 
     _encoding = 'utf-8'
 
@@ -57,10 +54,10 @@ if __name__ == '__main__':
         time.sleep(2)
         sys.exit(0)
 
-    min_silence_len_var = int(input('[750] Enter min silence len (1000 cuts at 1 second of silence, 500 is 0.5 sec): ') or 750)
-    silence_thresh_var = int(input('[-40] Enter silence thresh: ') or -40)
+    min_silence_len_var = Mínimo de tempo considerado como silêncio
+    silence_thresh_var = Volume considerado como silêncio em DB
 
-    skip_large_duration_files_input = input('[Yes] Do you want to skip large duration files? (type "yes" or "no"): ')
+    skip_large_duration_files_input = Pular áudios grandes
     if skip_large_duration_files_input.strip().lower() == 'yes':
         skip_large_duration_files = True
     elif skip_large_duration_files_input.strip().lower() == 'no':
@@ -69,7 +66,7 @@ if __name__ == '__main__':
         skip_large_duration_files = True
     
     if skip_large_duration_files:
-        max_dur_audio = int(input('[12] Enter max audio duration: ') or 12)
+        max_dur_audio = Duração máxima dos áudios em segundos
     else:
         max_dur_audio = 12
 
