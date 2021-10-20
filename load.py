@@ -140,16 +140,16 @@ if __name__ == '__main__':
 
             if transcription != '':
                 if os.path.isfile('output/list.txt'):
-                    if os.stat("output/list.txt", encoding=_encoding).st_size != 0:
+                    if os.stat("output/list.txt").st_size != 0:
                         with open('output/list.txt', 'a+') as f:
                             f.write(f'\nwavs/{file_number}.wav|' + transcription)
                             f.flush()
                     else:
-                        with open('output/list.txt', 'a+', encoding=_encoding) as f:
+                        with open('output/list.txt', 'a+') as f:
                             f.write(f'wavs/{file_number}.wav|' + transcription)
                             f.flush()
                 else:
-                    with open('output/list.txt', 'x', encoding=_encoding) as f:
+                    with open('output/list.txt', 'x') as f:
                         f.write(f'wavs/{file_number}.wav|' + transcription)
 
                 file_number = file_number + 1
