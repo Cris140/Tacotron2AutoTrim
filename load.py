@@ -137,21 +137,3 @@ if __name__ == '__main__':
 
         else:
             transcription = transcribe.get_large_audio_transcription(out_file, lang)
-
-            if transcription != '':
-                if os.path.isfile('output/list.txt'):
-                    if os.stat("output/list.txt", encoding=_encoding).st_size != 0:
-                        with open('output/list.txt', 'a+') as f:
-                            f.write(f'\nwavs/{file_number}.wav|' + transcription)
-                            f.flush()
-                    else:
-                        with open('output/list.txt', 'a+', encoding=_encoding) as f:
-                            f.write(f'wavs/{file_number}.wav|' + transcription)
-                            f.flush()
-                else:
-                    with open('output/list.txt', 'x', encoding=_encoding) as f:
-                        f.write(f'wavs/{file_number}.wav|' + transcription)
-
-                file_number = file_number + 1
-            else:
-                os.remove(out_file)
