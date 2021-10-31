@@ -3,10 +3,11 @@ import speech_recognition as sr
 import os
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
+from asrecognition import ASREngine
 
 # create a speech recognition object
 r = sr.Recognizer()
-
+asr = ASREngine("pt", model_path="jonatasgrosman/wav2vec2-large-xlsr-53-portuguese")
 
 # a function that splits the audio file into chunks
 # and applies speech recognition
@@ -42,7 +43,7 @@ def get_large_audio_transcription(path, lang):
             audio_listened = r.record(source)
             # try converting it to text
             try:
-                text = r.recognize_google(audio_listened, language=lang)
+                text = asr.transcribe(audio_listened)
             except sr.UnknownValueError as e:
                 print("Error:", str(e))
             else:
