@@ -1,20 +1,89 @@
 #@title Now use this cell to transcribe the file
 from google.colab import files
-
+import shutil
+import os
+import sys
+from natsort import natsorted
+erase_audios_that_google_couldnt_transcribe = False #@param{type:"boolean"}
+file_exists1 = os.path.exists('/content/dataset/wavs')
+if file_exists1==True:
+    dir1= "/content/dataset/wavs/"
+    txt_file = "/content/dataset/list.txt"
+    # checking whether file exists or not
+    if os.path.exists(txt_file):
+        # removing the file using the os.remove() method
+        os.remove(txt_file)
+    else:
+        # file not found message
+        print("File not found in the directory")
+    mp3_file = "/content/input/audio.mp3"
+    # checking whether file exists or not
+    if os.path.exists(mp3_file):
+        # removing the file using the os.remove() method
+        os.remove(mp3_file)
+    try:
+        shutil.rmtree(dir1)
+    except OSError as e:
+        print("Error: %s - %s." % (e.filename, e.strerror))
+    dir2= "/content/wavs1/"
+    try:
+        shutil.rmtree(dir2)
+    except OSError as e:
+        print("Error: %s - %s." % (e.filename, e.strerror))
+    # removing the file using the os.remove() method
+    os.remove(file_path)
 skip_large_duration_files ="No" #@param ["Yes", "No"]
 max_duration_of_audio ="20"#@param {type: "string"}
 minimum_silence_length ="200" #@param {type: "string"}
 silence_threshold ="-40" #@param {type: "string"}
-Language ="Brazilian Portuguese"#@param ["English", "Spanish", "French", "German", "Italian", "Japanese", "Russian", "Brazilian Portuguese", "Polish", "Arabic"]
+Language ="Brazilian Portuguese"#@param ["English", "Spanish", "French", "German", "Italian", "Japanese", "Russian", "Brazilian Portuguese", "Polish", "Arabic", "Turkish", "Zulu", "Slovak", "Mandarin Chinese", "Czech", "Korean"]
 max_duration_of_audio = int(max_duration_of_audio)
 silence_threshold = int(silence_threshold)
 minimum_silence_length = int(minimum_silence_length)
-
+lang = ''
+  
+lang_input = Language
+if Language == 'English':
+    Language = 'en-US'
+elif Language == 'Spanish':
+    Language = 'es-ES'
+elif Language == 'French':
+    Language = 'fr-FR'
+elif Language == 'German':
+    Language = 'de-DE'
+elif Language == 'Italian':
+    Language = 'it-IT'
+elif Language == 'Japanese':
+    Language = 'ja'
+    _encoding = 'utf-16'
+elif Language == 'Russian':
+    Language = 'ru'
+elif Language =='Arabic':
+    Language = 'ar-EG'
+elif Language == 'Brazilian Portuguese':
+    Language = 'pt-BR'
+elif Language == 'Polish':
+    Language = 'pl-PL'
+elif Language == 'Turkish':
+    Language = 'tr'
+elif Language == 'Zulu':
+    Language = 'zu'
+elif Language == 'Slovak':
+    Language = 'sk'
+elif Language == 'Mandarin Chinese':
+    Language = 'zh-CN'
+elif Language == 'Czech':
+    Language = 'cs'
+elif Language == 'Korean':
+    Language = 'ko-KR'
+else:
+    print('Invalid Language!')
 import re
-
+import shutil
+import sys
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
-
+import speech_recognition as sr
 import glob
 import os
 
@@ -32,40 +101,10 @@ if __name__ == '__main__':
 
     input_file = "audio.mp3"
 
-    lang = ''
-    
-    lang_input = Language
 
     _encoding = 'utf-8'
-
-    if lang_input.strip().lower() == 'english':
-        lang = 'en-US'
-    elif lang_input.strip().lower() == 'spanish':
-        lang = 'es-ES'
-    elif lang_input.strip().lower() == 'french':
-        lang = 'fr-FR'
-    elif lang_input.strip().lower() == 'german':
-        lang = 'de-DE'
-    elif lang_input.strip().lower() == 'italian':
-        lang = 'it-IT'
-    elif lang_input.strip().lower() == 'japanese':
-        lang = 'ja'
-        _encoding = 'utf-16'
-    elif lang_input.strip().lower() == 'russian':
-        lang = 'ru'
-    elif lang_input.strip().lower() == 'arabic':
-        lang = 'ar-EG'
-    elif lang_input.strip().lower() == 'brazilian portuguese':
-        lang = 'pt-BR'
-    elif lang_input.strip().lower() == 'polish':
-        lang = 'pl-PL'
-    else:
-        print('Invalid language!')
-        import sys
-        import time
-        time.sleep(2)
-        sys.exit(0)
-
+file_exists = os.path.exists('/content/input/audio.mp3')
+if file_exists==True:
     min_silence_len_var = minimum_silence_length
     silence_thresh_var = silence_threshold
 
@@ -81,14 +120,11 @@ if __name__ == '__main__':
         max_dur_audio = max_duration_of_audio
     else:
         max_dur_audio = 12
-
     # assign files
-    input_file = 'input/' + input_file
+    input_file = '/content/input/' + input_file
 
     # create dir if doesn't exist
-    os.makedirs(os.path.dirname('input/'), exist_ok=True)
-    os.makedirs(os.path.dirname('output/'), exist_ok=True)
-    os.makedirs(os.path.dirname('output/wavs/'), exist_ok=True)
+    os.makedirs(os.path.dirname('/content/wavs/'), exist_ok=True)
 
     sound_file = AudioSegment.from_file(input_file)
     sound_file = sound_file.set_frame_rate(22050)  # don't change this
@@ -98,8 +134,8 @@ if __name__ == '__main__':
 
     for i, chunk in enumerate(audio_chunks):
 
-        if not len(os.listdir('output/wavs')) == 0:
-            list_of_files = glob.glob('output/wavs/*')  # * means all
+        if not len(os.listdir('/content/wavs')) == 0:
+            list_of_files = glob.glob('/content/wavs/*')  # * means all
             latest_file = max(list_of_files, key=os.path.getctime)
 
             # Extract numbers and cast them to int
@@ -108,7 +144,7 @@ if __name__ == '__main__':
             if int(list_of_nums[0]) >= file_number:
                 file_number = int(list_of_nums[0]) + 1
 
-        out_file = "output/wavs/{0}.wav".format(file_number)
+        out_file = "/content/wavs/{0}.wav".format(file_number)
         print("exporting", out_file + '\n')
 
         chunk.export(out_file, format="wav")
@@ -119,18 +155,16 @@ if __name__ == '__main__':
             rate = f.getframerate()
             duration = frames / float(rate)
             #print('Duration:', duration)
-from distutils.dir_util import copy_tree
-copy_tree("/content/Tacotron2AutoTrim/output/wavs", "/content/Tacotron2AutoTrim/output/adittional")
-from pydub import AudioSegment
-from pydub.playback import play
-import os
 
-path, dirs, files = next(os.walk("/content/Tacotron2AutoTrim/output/wavs/"))
-file_count = len(files)
-for x in range(1,file_count+1):
+path, dirs, files1 = next(os.walk("/content/wavs/"))
+file_count = len(files1)
+if os.path.isdir('/content/wavs1')==False:
+    shutil.copytree('/content/wavs', '/content/wavs1')
+arquivos = os.listdir("/content/wavs1/")
+for file in natsorted(arquivos):
 
-  input_wav_file   = "/content/Tacotron2AutoTrim/output/wavs/"+str(x)+".wav"
-  output_wav_file  = (input_wav_file)
+  input_wav_file   = '/content/wavs1/'+file
+  output_wav_file  = input_wav_file
   target_wav_time  = 5 * 1000 # 5 seconds (or 5000 milliseconds)
 
   original_segment = AudioSegment.from_wav(input_wav_file)
@@ -138,54 +172,55 @@ for x in range(1,file_count+1):
   silenced_segment = AudioSegment.silent(duration=silence_duration)
   combined_segment = original_segment + silenced_segment
   combined_segment.export(output_wav_file, format="wav") 
-import speech_recognition as sr
-from os import path
-import os
-__file__ = 'trans.py'
-filecount = len([name for name in os.listdir('/content/Tacotron2AutoTrim/output/wavs') if os.path.isfile(name)])
 
-for x in range(1,filecount):
-      AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), str(x)+".wav")
-      # AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), "french.aiff")
-      # AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), "chinese.flac")
-      # use the audio file as the audio source
+# obtain path to "english.wav" in the same folder as this script
+from os import path
+__file__ = 'trans.py'
+# use the audio file as the audio source
+file_exists = os.path.exists('/content/input/audio.mp3')
+if file_exists==True:
+      pasta1="/content/wavs1/"
+else:
+      pasta1="/content/wavs/"
+os.chdir(pasta1)
+arquivos1 = os.listdir("/content/wavs1/")
+for file in natsorted(arquivos1):
+      pastaaudio = "/content/wavs1/"
+      AUDIO_FILE = pastaaudio + file
       r = sr.Recognizer()
       with sr.AudioFile(AUDIO_FILE) as source:
-          audio = r.record(source)  # read the entire audio file
+          audio = r.record(source)  # read the entire audio file    
       try:
           # for testing purposes, we're just using the default API key
-          # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
-          # instead of `r.recognize_google(audio)`
-          print("wavs/"+str(x)+".wav"+"|"+r.recognize_google(audio, language="pt-BR"), file=open("/content/Tacotron2AutoTrim/output/list1.txt", "a"))
+          # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY", show_all=True)`
+          # instead of `r.recognize_google(audio, show_all=True)`
+          print("wavs/"+file+"|"+ r.recognize_google(audio, language=Language), file=open("/content/dataset/list1.txt", "a"))
       except sr.UnknownValueError:
-          print("Google Speech Recognition could not understand audio")
+           if erase_audios_that_google_couldnt_transcribe:
+                os.remove("/content/wavs/"+file)
+           else:
+                print("Google wasn't able to transcribe the audio "+file+", Skipping it...")
       except sr.RequestError as e:
-          print("Could not request results from Google Speech Recognition service; {0}".format(e))
-import os
-
-if not os.path.exists('/content/Tacotron2AutoTrim/output/list1.txt'):
-    os.mknod('/content/Tacotron2AutoTrim/output/list1.txt')
-with open('/content/Tacotron2AutoTrim/output/list1.txt', 'r') as istr:
-    with open('/content/Tacotron2AutoTrim/output/list2.txt', 'w') as ostr:
+          print("Could not request results from Googleeech Recognition service; {0}".format(e))
+%cd /content/
+with open('/content/dataset/list1.txt', 'r') as istr:
+    with open('/content/dataset/list2.txt', 'w') as ostr:
         for line in istr:
             line = line.rstrip('\n') + '.'
             print(line, file=ostr)
 
-copy_tree("/content/Tacotron2AutoTrim/output/adittional", "/content/Tacotron2AutoTrim/output/wavs")
-
-dir_path = '/content/Tacotron2AutoTrim/output/adittional'
-
+#@markdown ###Let this option turned off if you want to use wav2vec2 to transcribe
+download_dataset_when_finished = True #@param{type:"boolean"}
+!rm /content/dataset/list1.txt
+!mv /content/dataset/list2.txt /content/dataset/list.txt
+shutil.move("/content/wavs","/content/dataset")
+pasta="/content/wavs1"
 try:
-    os.rmdir(dir_path)
+    shutil.rmtree(pasta)
 except OSError as e:
-    print("Error: %s : %s" % (dir_path, e.strerror))
-!rm /content/Tacotron2AutoTrim/output/list1.txt
-!mv /content/Tacotron2AutoTrim/output/list2.txt /content/Tacotron2AutoTrim/output/list.txt
-#@markdown ###Deixe essa opção desativada se quiser transcrever usando wav2vec2
-baixar_arquivo_ao_finalizar = True #@param{type:"boolean"}
-%cd /content/Tacotron2AutoTrim/
-if baixar_arquivo_ao_finalizar==True:
-    !zip -r /content/dataset.zip /content/Tacotron2AutoTrim/output
-    files.download("/content/dataset.zip")
+    print("Error: %s - %s." % (e.filename, e.strerror))
+if download_dataset_when_finished==True:
+      !zip -r /content/dataset.zip /content/dataset/      
+      files.download("/content/dataset.zip")
 else:
-    !rm /content/Tacotron2AutoTrim/input/audio.mp3
+    !rm /content/input/audio.mp3
